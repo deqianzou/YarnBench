@@ -113,6 +113,10 @@ class JobRecorder:
 
     def run_job(self):
         print "start job",self.current_id
+        if os.path.isdir('./test'):
+            pass
+        else:
+            os.mkdir('test')
         run_list = []
         ##append bin(e.g., spark-submit)
         run_list.append(self.JOB_BIN)
@@ -144,9 +148,10 @@ class JobRecorder:
         print " ".join(final_run_list)
         #FNULL=open(os.devnull,'w')
         #print index
-        FNULL=open("./test/temp_"+str(self.current_id),'w')
-
-        self.job_process = subprocess.Popen(final_run_list,stdout=FNULL,stderr=subprocess.STDOUT) 
+        fname = "./test/temp_"+str(self.current_id)
+        os.mknod(fname)
+        with open(fname, 'w') as FNULL:
+            self.job_process = subprocess.Popen(final_run_list,stdout=FNULL,stderr=subprocess.STDOUT)
         return None
         #RunHadoop.HDFSDeletePath(self.job_output)
 
